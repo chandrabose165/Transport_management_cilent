@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import '../Styles/Login.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,10 +6,15 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] =
+    useState(false);
+
   const [data, setData] = useState({
     email: '',
     password: '',
   });
+
+  // HANDLE INPUT
 
   const handleChange = (e) => {
 
@@ -20,6 +24,7 @@ const Login = () => {
     });
   };
 
+  // LOGIN FUNCTION
 
   const handleLogin = async (e) => {
 
@@ -33,18 +38,20 @@ const Login = () => {
           method: 'POST',
 
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type':
+              'application/json',
           },
 
           body: JSON.stringify(data),
         }
       );
 
-      const result = await response.json();
+      const result =
+        await response.json();
 
       if (result.success) {
 
-        // STORE USER SESSION
+        // STORE SESSION
 
         localStorage.setItem(
           'userEmail',
@@ -57,6 +64,9 @@ const Login = () => {
         );
 
         alert(result.message);
+
+        // ADMIN LOGIN
+
         if (
 
           result.user.email ===
@@ -71,23 +81,19 @@ const Login = () => {
 
         }
 
+        // USER LOGIN
+
         else {
 
           navigate('/');
         }
 
-      }
-
-      
-
-      else {
+      } else {
 
         alert(result.message);
       }
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.log(error);
 
@@ -105,6 +111,7 @@ const Login = () => {
 
         <h1>Login</h1>
 
+        {/* EMAIL */}
 
         <input
           type="email"
@@ -115,17 +122,47 @@ const Login = () => {
           required
         />
 
+        {/* PASSWORD */}
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter Password"
-          value={data.password}
-          onChange={handleChange}
-          required
-        />
+        <div className="password-box">
 
-        {/* LOGIN BUTTON */}
+          <input
+            type={
+              showPassword
+                ? 'text'
+                : 'password'
+            }
+
+            name="password"
+
+            placeholder="Enter Password"
+
+            value={data.password}
+
+            onChange={handleChange}
+
+            required
+          />
+
+          <span
+            className="show-password"
+
+            onClick={() =>
+              setShowPassword(
+                !showPassword
+              )
+            }
+          >
+            {
+              showPassword
+                ? 'Hide'
+                : 'Show'
+            }
+          </span>
+
+        </div>
+
+        {/* BUTTON */}
 
         <button type="submit">
           Login
