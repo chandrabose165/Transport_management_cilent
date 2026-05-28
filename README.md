@@ -1,16 +1,201 @@
-# React + Vite
+# 🚍 Transport Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern full-stack Transport Management System built using React, Node.js, Express, and JSON file storage.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# ✨ Features
 
-## React Compiler
+## 👤 User Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- User Registration
+- User Login
+- Logout Functionality
+- Profile Display
+- Booking Search System
+- Flights Booking
+- Train Booking
+- Bus Booking
+- Cargo Booking
+- Best Routes Section
+- Most Popular Cities Section
+- Responsive UI
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🔐 Admin Features
+
+- Admin Login
+- Admin Dashboard
+- View User Login Details
+- View Booking Ticket Status
+- Reports Section
+- Payment Section
+
+---
+
+# 🛠️ Technologies Used
+
+## Frontend
+
+- React.js
+- React Router DOM
+- CSS3
+- Lucide React Icons
+
+## Backend
+
+- Node.js
+- Express.js
+- JSON File Storage
+
+## Deployment
+
+- Frontend → Vercel
+- Backend → Render
+
+---
+
+# 📂 Project Structure
+
+transport-management-system/
+
+├── frontend/
+
+│ ├── src/
+
+│ ├── public/
+
+│ ├── package.json
+
+│ └── vite.config.js
+
+│
+
+├── backend/
+
+│ ├── server.js
+
+│ ├── userdata.json
+
+│ ├── package.json
+
+│ └── package-lock.json
+
+---
+
+# ⚙️ Installation
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone YOUR_GITHUB_REPO_LINK
+````
+
+---
+
+## 2️⃣ Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 3️⃣ Backend Setup
+
+```bash
+cd backend
+npm install
+node server.js
+```
+
+Backend runs on:
+
+```bash
+http://localhost:5000
+```
+
+---
+
+# 🔑 Admin Login
+
+```text
+Email:
+admin@gmail.com
+
+Password:
+admin@123
+```
+# 🔑 Admin Login
+
+```text
+Email:
+varisachandrabose20@gmail.com
+
+Password:
+bose@1245
+```
+
+---
+
+# 🌐 API Endpoints
+
+## Register User
+
+```bash
+POST /register
+```
+
+## Login User
+
+```bash
+POST /login
+```
+
+---
+
+# 📦 userdata.json Format
+
+```json
+[
+  {
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "phone": "7893259524",
+    "password": "admin@123"
+  }
+]
+```
+
+---
+
+# 🚀 Deployment
+
+## Frontend Deployment
+
+Deploy frontend using:
+
+* Vercel
+
+## Backend Deployment
+
+Deploy backend using:
+
+* Render
+
+---
+
+# 🧑‍💻 Developed By
+
+Chandrabose
+
+---
+
+# 📄 License
+
+This project is open source and free to use.
+
+```
