@@ -32,6 +32,11 @@ const Register = () => {
     });
   };
 
+  const isPasswordValid = (password) => {
+    const passwordPattern = /^(?=.*\d)(?=.*[^A-Za-z0-9])[A-Z]\S*$/;
+    return passwordPattern.test(password);
+  };
+
   // REGISTER FUNCTION
 
   const handleRegister = async (e) => {
@@ -47,6 +52,13 @@ const Register = () => {
 
       alert('Passwords do not match');
 
+      return;
+    }
+
+    if (!isPasswordValid(data.password)) {
+      alert(
+        'Password must start with an uppercase letter, include at least one number, and contain a special character.'
+      );
       return;
     }
 

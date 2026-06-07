@@ -27,6 +27,7 @@ const placeSuggestions = [
   'Kochi',
   'Delhi',
   'Kolkata',
+  'Mumbai','Goa','Andhrapradesh','Tamilnadu'
 ];
 
 const Home = () => {
@@ -176,6 +177,16 @@ const Home = () => {
 
   const currentSearch =
     searchValues[activeTab];
+
+  const [suggestionField, setSuggestionField] = useState(null); // 'from' | 'to' | null
+
+  const suggestionsFor = (q) => {
+    const s = q ? q.trim().toLowerCase() : '';
+    if (s.length < 2) return [];
+    return placeSuggestions.filter((p) =>
+      p.toLowerCase().startsWith(s) || p.toLowerCase().includes(s)
+    );
+  };
 
   const getFieldName = (field) => {
 
@@ -363,22 +374,16 @@ const Home = () => {
               const fieldName =
                 getFieldName(field);
 
+              const isTrainText =
+                activeTab === 'trains' &&
+                (field.label === 'From' || field.label === 'To');
+
               return (
-
-                <div
-                  key={idx}
-                  className="input-box"
-                >
-
+                <div key={idx} className="input-box">
                   <div className="input-top">
-
-                    {(field.label === 'From' ||
-                      field.label === 'To') ? (
-
+                    {isTrainText ? (
                       <MapPin size={16} />
-
                     ) : (
-
                       <Calendar size={16} />
                     )}
 
@@ -387,22 +392,62 @@ const Home = () => {
                     </span>
                   </div>
 
-                  <input
-                    type={field.type || 'text'}
-                    placeholder={
-                      field.placeholder
-                    }
-                    value={
-                      currentSearch[fieldName]
-                    }
-                    onChange={(e) =>
-                      handleSearchValueChange(
-                        fieldName,
-                        e.target.value
-                      )
-                    }
-                    required
-                  />
+                  {isTrainText ? (
+                    <div className="autocomplete">
+                      <input
+                        type={field.type || 'text'}
+                        placeholder={field.placeholder}
+                        value={currentSearch[fieldName]}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          handleSearchValueChange(fieldName, v);
+                          setSuggestionField(
+                            v.trim().length >= 2 ? fieldName : null
+                          );
+                        }}
+                        onFocus={() => {
+                          if (
+                            currentSearch[fieldName] &&
+                            currentSearch[fieldName].trim().length >= 2
+                          )
+                            setSuggestionField(fieldName);
+                        }}
+                        onBlur={() => setTimeout(() => setSuggestionField(null), 200)}
+                        required
+                      />
+
+                      {suggestionField === fieldName && (
+                        <div className="autocomplete-dropdown">
+                          {suggestionsFor(currentSearch[fieldName]).length === 0 ? (
+                            <div className="autocomplete-item">No matches</div>
+                          ) : (
+                            suggestionsFor(currentSearch[fieldName]).map((s) => (
+                              <div
+                                key={s}
+                                className="autocomplete-item"
+                                onMouseDown={() => {
+                                  handleSearchValueChange(fieldName, s);
+                                  setSuggestionField(null);
+                                }}
+                              >
+                                {s}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <input
+                      type={field.type || 'text'}
+                      placeholder={field.placeholder}
+                      value={currentSearch[fieldName]}
+                      onChange={(e) =>
+                        handleSearchValueChange(fieldName, e.target.value)
+                      }
+                      required
+                    />
+                  )}
                 </div>
               );
             })}

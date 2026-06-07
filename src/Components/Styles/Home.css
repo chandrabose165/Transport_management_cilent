@@ -496,6 +496,68 @@
   font-weight: 600;
 }
 
+/* Places autocomplete and results styles */
+.places-search .places-controls {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.places-search .autocomplete {
+  position: relative;
+  flex: 1;
+}
+
+/* apply same autocomplete styling inside input-box (train inputs) */
+.input-box .autocomplete {
+  position: relative;
+}
+
+.places-search .autocomplete input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(203,213,225,0.7);
+  background: white;
+  outline: none;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(2,6,23,0.12);
+  max-height: 220px;
+  overflow: auto;
+  z-index: 120;
+}
+
+.autocomplete-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(226,232,240,0.7);
+}
+
+.autocomplete-item:last-child { border-bottom: none; }
+
+.autocomplete-item:hover {
+  background: linear-gradient(90deg, rgba(14,116,144,0.06), transparent);
+}
+
+.quick-suggestions button {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none;
+  background: #f1f5f9;
+  cursor: pointer;
+}
+
+.place-list { display: grid; gap: 12px; margin-top: 12px; }
+.place-item { background: white; padding: 12px; border-radius: 10px; box-shadow: 0 8px 18px rgba(2,6,23,0.06); }
+
 /* FOOTER */
 
 #footerpage {
