@@ -178,6 +178,8 @@ const Home = () => {
   const currentSearch =
     searchValues[activeTab];
 
+  const minDate = new Date().toISOString().split('T')[0];
+
   const [suggestionField, setSuggestionField] = useState(null); // 'from' | 'to' | null
 
   const suggestionsFor = (q) => {
@@ -442,6 +444,7 @@ const Home = () => {
                       type={field.type || 'text'}
                       placeholder={field.placeholder}
                       value={currentSearch[fieldName]}
+                      min={field.type === 'date' ? minDate : undefined}
                       onChange={(e) =>
                         handleSearchValueChange(fieldName, e.target.value)
                       }
