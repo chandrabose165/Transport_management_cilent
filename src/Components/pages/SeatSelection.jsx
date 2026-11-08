@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../Styles/SeatSelection.css';
+import BookingProgress from '../BookingProgress';
 import { Armchair, ArrowLeft, CheckCircle2, CreditCard, Ticket } from 'lucide-react';
 
 const seatRows = [
@@ -71,58 +71,59 @@ const SeatSelection = () => {
   };
 
   return (
-    <div className="seat-page">
-      <div className="seat-shell">
-        <section className="seat-overview-card">
-          <button type="button" className="seat-back-btn" onClick={() => navigate(-1)}>
+    <main className="min-h-screen bg-transport-surface bg-cover bg-center bg-fixed px-4 py-8 text-slate-900 sm:px-8">
+      <div className="mx-auto max-w-6xl space-y-6">
+        <section className="rounded-3xl bg-transport-hero bg-cover bg-center p-6 text-white shadow-soft sm:p-9">
+          <button type="button" className="mb-8 inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/10" onClick={() => navigate(-1)}>
             <ArrowLeft size={16} />
             Back
           </button>
 
-          <span className="seat-eyebrow">Seat selection</span>
-          <h1>Select the seats for your journey.</h1>
-          <p>
+          <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-100">Seat selection</span>
+          <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Select the seats for your journey.</h1>
+          <p className="mt-3 max-w-2xl leading-7 text-slate-300">
             Choose exactly {requiredSeatCount} seat{requiredSeatCount > 1 ? 's' : ''} to
             continue to payment and confirmation.
           </p>
+          <BookingProgress currentStep={3} />
 
-          <div className="seat-summary-cards">
-            <div className="seat-summary-card">
-              <span>Service</span>
-              <strong>{routeTitle}</strong>
+          <div className="mt-7 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Service</span>
+              <strong className="mt-2 block text-sm text-white">{routeTitle}</strong>
             </div>
-            <div className="seat-summary-card">
-              <span>Passenger</span>
-              <strong>{getPassengerSummary(bookingData)}</strong>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Passenger</span>
+              <strong className="mt-2 block text-sm text-white">{getPassengerSummary(bookingData)}</strong>
             </div>
-            <div className="seat-summary-card">
-              <span>Selected seats</span>
-              <strong>{selectedSeats.length ? selectedSeats.join(', ') : 'None yet'}</strong>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Selected seats</span>
+              <strong className="mt-2 block text-sm text-white">{selectedSeats.length ? selectedSeats.join(', ') : 'None yet'}</strong>
             </div>
           </div>
         </section>
 
-        <section className="seat-layout-card">
-          <div className="seat-layout-header">
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+          <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
             <div>
-              <span className="seat-label">Choose seats</span>
-              <h2>Available seat map</h2>
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Choose seats</span>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950">Available seat map</h2>
             </div>
-            <div className="seat-legend">
-              <span><i className="seat-dot seat-dot-available" />Available</span>
-              <span><i className="seat-dot seat-dot-selected" />Selected</span>
-              <span><i className="seat-dot seat-dot-booked" />Booked</span>
+            <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-500">
+              <span className="inline-flex items-center gap-2"><i className="h-3 w-3 rounded bg-slate-100 ring-1 ring-slate-300" />Available</span>
+              <span className="inline-flex items-center gap-2"><i className="h-3 w-3 rounded bg-brand-600" />Selected</span>
+              <span className="inline-flex items-center gap-2"><i className="h-3 w-3 rounded bg-slate-300" />Booked</span>
             </div>
           </div>
 
-          <div className="seat-grid-wrapper">
-            <div className="seat-screen">Front</div>
-            <div className="seat-grid">
+          <div className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-slate-50 p-5 sm:p-8">
+            <div className="mb-7 rounded-t-[50%] border-t-4 border-brand-200 py-3 text-center text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Front</div>
+            <div className="grid gap-3">
               {seatRows.map((row, rowIndex) => (
-                <div key={rowIndex} className="seat-row">
+                <div key={rowIndex} className="grid grid-cols-[1fr_1fr_2rem_1fr_1fr] gap-2">
                   {row.map((seat) => {
                     if (!seat) {
-                      return <div key={`${rowIndex}-gap`} className="seat-gap" />;
+                      return <div key={`${rowIndex}-gap`} />;
                     }
 
                     const isBooked = bookedSeats.has(seat);
@@ -132,9 +133,8 @@ const SeatSelection = () => {
                       <button
                         key={seat}
                         type="button"
-                        className={`seat-tile ${
-                          isBooked ? 'seat-tile-booked' : isSelected ? 'seat-tile-selected' : ''
-                        }`}
+                        aria-label={`Seat ${seat}${isBooked ? ', booked' : isSelected ? ', selected' : ', available'}`}
+                        className={`flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border text-xs font-bold transition disabled:cursor-not-allowed ${isBooked ? 'border-slate-300 bg-slate-200 text-slate-400' : isSelected ? 'border-brand-600 bg-brand-600 text-white shadow-md shadow-brand-600/20' : 'border-slate-200 bg-white text-slate-600 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700'}`}
                         onClick={() => handleSeatToggle(seat)}
                         disabled={isBooked}
                       >
@@ -148,8 +148,8 @@ const SeatSelection = () => {
             </div>
           </div>
 
-          <div className="seat-action-bar">
-            <div className="seat-action-copy">
+          <div className="mt-7 flex flex-col justify-between gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center">
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
               <Ticket size={16} />
               <span>
                 {selectedSeats.length} of {requiredSeatCount} seat(s) selected
@@ -158,7 +158,7 @@ const SeatSelection = () => {
 
             <button
               type="button"
-              className="seat-continue-btn"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
               onClick={handleContinue}
               disabled={!canContinue}
             >
@@ -167,13 +167,13 @@ const SeatSelection = () => {
             </button>
           </div>
 
-          <div className="seat-note">
+          <div className="mt-4 flex items-center gap-2 rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-700">
             <CheckCircle2 size={16} />
             <span>Select the required number of seats to unlock the next step.</span>
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 };
 

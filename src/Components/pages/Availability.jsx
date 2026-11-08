@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../Styles/Availability.css';
+import BookingProgress from '../BookingProgress';
 import { ArrowLeft, Box, Bus, Clock3, MapPin, Plane, Train, Users } from 'lucide-react';
 
 const availabilityData = {
@@ -72,30 +72,31 @@ const Availability = () => {
   };
 
   return (
-    <div className="availability-page">
-      <div className="availability-shell">
-        <section className="availability-header-card">
-          <button type="button" className="availability-back-btn" onClick={() => navigate(-1)}>
+    <main className="min-h-screen bg-transport-surface bg-cover bg-center bg-fixed px-4 py-8 text-slate-900 sm:px-8">
+      <div className="mx-auto max-w-6xl space-y-6">
+        <section className="overflow-hidden rounded-3xl bg-transport-hero bg-cover bg-center p-6 text-white shadow-soft sm:p-9">
+          <button type="button" className="mb-8 inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/10" onClick={() => navigate(-1)}>
             <ArrowLeft size={16} />
             Back
           </button>
 
-          <div className="availability-hero">
-            <span className="availability-eyebrow">Available options</span>
-            <h1>Choose from available trains, flights, buses, and cargo services.</h1>
-            <p>
+          <div className="max-w-3xl">
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-100">Available options</span>
+            <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">Choose the right service for your journey.</h1>
+            <p className="mt-3 max-w-2xl leading-7 text-slate-300">
               Review schedules, fares, and service details before moving to seat
               selection and payment.
             </p>
+            <BookingProgress currentStep={2} />
           </div>
 
-          <div className="availability-summary-grid">
-            <div className="summary-chip">
+          <div className="mt-7 flex flex-wrap gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200">
               <Users size={16} />
               <span>{bookingData?.passengerCount || 1} passenger(s)</span>
             </div>
             {(bookingData?.origin || bookingData?.destination) && (
-              <div className="summary-chip">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200">
                 <MapPin size={16} />
                 <span>
                   {bookingData?.origin || 'From'} to {bookingData?.destination || 'To'}
@@ -103,7 +104,7 @@ const Availability = () => {
               </div>
             )}
             {bookingData?.transportType === 'buses' && bookingData?.departure && bookingData?.arrival && (
-              <div className="summary-chip">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200">
                 <MapPin size={16} />
                 <span>
                   {bookingData.departure} to {bookingData.arrival}
@@ -113,24 +114,24 @@ const Availability = () => {
           </div>
         </section>
 
-        <section className="availability-content-card">
-          <div className="availability-toolbar">
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+          <div className="mb-7 flex flex-col gap-5">
             <div>
-              <span className="availability-label">Transport options</span>
-              <h2>
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Transport options</span>
+              <h2 className="mt-2 flex items-center gap-2 text-xl font-extrabold tracking-tight text-slate-950">
                 <ActiveIcon size={20} />
                 {activeMeta.label} available now
               </h2>
             </div>
 
-            <div className="availability-tabs">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {Object.entries(transportMeta).map(([key, value]) => {
                 const Icon = value.icon;
                 return (
                   <button
                     key={key}
                     type="button"
-                    className={activeType === key ? 'availability-tab-active' : ''}
+                    className={`inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-3 text-sm font-bold transition ${activeType === key ? 'border-brand-600 bg-brand-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700'}`}
                     onClick={() => setActiveType(key)}
                   >
                     <Icon size={16} />
@@ -141,53 +142,53 @@ const Availability = () => {
             </div>
           </div>
 
-          <div className="availability-list">
+          <div className="grid gap-4">
             {selectedOptions.map((option) => (
-              <article key={option.id} className="availability-card">
-                <div className="availability-main">
+              <article key={option.id} className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-brand-200 hover:shadow-md sm:p-6">
+                <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <span className="availability-id">{option.id}</span>
-                    <h3>{option.name}</h3>
+                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-500">{option.id}</span>
+                    <h3 className="mt-3 text-lg font-extrabold text-slate-950">{option.name}</h3>
                   </div>
-                  <strong className="availability-fare">{option.fare}</strong>
+                  <strong className="text-xl font-extrabold text-brand-700">{option.fare}</strong>
                 </div>
 
-                <div className="availability-meta">
-                  <div>
-                    <span>Departure</span>
-                    <strong>{option.depart}</strong>
+                <div className="mt-5 grid gap-4 border-y border-slate-100 py-5 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="grid gap-1">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Departure</span>
+                    <strong className="text-sm text-slate-800">{option.depart}</strong>
                   </div>
-                  <div>
-                    <span>Arrival</span>
-                    <strong>{option.arrive}</strong>
+                  <div className="grid gap-1">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Arrival</span>
+                    <strong className="text-sm text-slate-800">{option.arrive}</strong>
                   </div>
-                  <div>
-                    <span>Duration</span>
-                    <strong>
+                  <div className="grid gap-1">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Duration</span>
+                    <strong className="inline-flex items-center gap-1 text-sm text-slate-800">
                       <Clock3 size={14} />
                       {option.duration}
                     </strong>
                   </div>
                   {activeType === 'buses' && bookingData?.departure && bookingData?.arrival && (
-                    <div>
-                      <span>Route</span>
-                      <strong>
+                    <div className="grid gap-1">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Route</span>
+                      <strong className="text-sm text-slate-800">
                         {bookingData.departure} - {bookingData.arrival}
                       </strong>
                     </div>
                   )}
                   {activeType !== 'buses' && (bookingData?.origin || bookingData?.destination) && (
-                    <div>
-                      <span>Route</span>
-                      <strong>
+                    <div className="grid gap-1">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Route</span>
+                      <strong className="text-sm text-slate-800">
                         {bookingData?.origin || 'From'} - {bookingData?.destination || 'To'}
                       </strong>
                     </div>
                   )}
                 </div>
 
-                <div className="availability-actions">
-                  <button type="button" onClick={() => handleOptionContinue(option)}>
+                <div className="mt-5 flex justify-end">
+                  <button className="rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-100" type="button" onClick={() => handleOptionContinue(option)}>
                     {activeType === 'cargo' ? 'Continue to Payment' : 'Select Seats'}
                   </button>
                 </div>
@@ -196,7 +197,7 @@ const Availability = () => {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 };
 
